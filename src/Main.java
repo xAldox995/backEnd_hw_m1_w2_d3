@@ -4,7 +4,6 @@ import e_commerceClasses.Product;
 
 import java.time.LocalDate;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class Main {
     public static void main(String[] args) {
@@ -17,7 +16,8 @@ public class Main {
         Product prod4 = new Product("Books", 4L, "Trading Guide", 1.00);
 
         List<Product> prodotti = List.of(prod1, prod2, prod3, prod4);
-        List<Product> prodottiFiltrati = prodotti.stream().filter(prod -> prod.getCategory().equals("Books")).filter(product -> product.getPrice() > 100).collect(Collectors.toList());
+        List<Product> prodottiFiltrati = prodotti.stream().
+                filter(prod -> prod.getCategory().equals("Books") && prod.getPrice() > 100).toList();
 
         prodottiFiltrati.forEach(product -> {
             System.out.println(product);
@@ -39,7 +39,9 @@ public class Main {
 
         List<Order> ordini = List.of(pacco1, pacco2, pacco3);
 
-        List<Order> ordiniFiltrati = ordini.stream().filter(order -> order.getProducts().stream().anyMatch(product -> product.getCategory().equals("Baby"))).toList();
+        List<Order> ordiniFiltrati = ordini.stream().
+                filter(order -> order.getProducts().stream().anyMatch(product -> product.getCategory().
+                        equals("Baby"))).toList();
 
         ordiniFiltrati.forEach(order -> {
             System.out.println(order);
@@ -83,8 +85,8 @@ public class Main {
         LocalDate fineIntervallo = LocalDate.of(2021, 4, 1);
 
         List<Product> prodottiOrdinatiNellIntervallo = listaOrdini.stream().
-                filter(order -> order.getCustomer().getTier() == 2).
-                filter(order -> order.getOrderDate().isAfter(inizioIntervallo) &&
+                filter(order -> order.getCustomer().getTier() == 2 &&
+                        order.getOrderDate().isAfter(inizioIntervallo) &&
                         order.getOrderDate().isBefore(fineIntervallo)).
                 flatMap(order -> order.getProducts().stream()).toList();
 
