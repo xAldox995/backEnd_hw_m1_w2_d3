@@ -65,6 +65,31 @@ public class Main {
 
         System.out.println("------Esercizio 4------");
 
+        Customer customer1 = new Customer(1L, "Antonio", 1);
+        Customer customer2 = new Customer(2L, "Pandolfo", 2);
+
+        Product articolo1 = new Product("Baby", 1L, "Shampoo per bambini", 5.25);
+        Product articolo2 = new Product("Elettronica", 2L, "PS5 PRO", 800.00);
+        Product articolo3 = new Product("Book", 3L, "Story Book", 0.50);
+        Product articolo4 = new Product("Toys", 4L, "Action-Figure", 15.25);
+
+        Order order1 = new Order(1L, "Spedito", LocalDate.of(2021, 2, 15), List.of(articolo1, articolo4), customer2);
+        Order order2 = new Order(2L, "In Elaborazione", LocalDate.of(2021, 3, 10), List.of(articolo2), customer2);
+        Order order3 = new Order(3L, "Consegnato", LocalDate.of(2021, 4, 5), List.of(articolo3), customer1);
+
+        List<Order> listaOrdini = List.of(order1, order2, order3);
+
+        LocalDate inizioIntervallo = LocalDate.of(2021, 2, 1);
+        LocalDate fineIntervallo = LocalDate.of(2021, 4, 1);
+
+        List<Product> prodottiOrdinatiNellIntervallo = listaOrdini.stream().
+                filter(order -> order.getCustomer().getTier() == 2).
+                filter(order -> order.getOrderDate().isAfter(inizioIntervallo) &&
+                        order.getOrderDate().isBefore(fineIntervallo)).
+                flatMap(order -> order.getProducts().stream()).toList();
+
+        prodottiOrdinatiNellIntervallo.forEach(product -> System.out.println(product));
+
 
     }
 }
